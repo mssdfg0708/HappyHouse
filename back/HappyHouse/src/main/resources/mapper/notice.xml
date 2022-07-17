@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.happyhouse.model.mapper.NoticeMapper">
+
+	<select id="findAllNotice" resultType="Notice">
+		select noticeId, writerId, writerName, title, description, dateTime, hits
+		from notice;
+	</select>
+	
+	<insert id="createNotice" parameterType="Notice">
+		insert into notice (writerId, writerName, title, description, dateTime, hits)
+			value (#{writerId}, #{writerName}, #{title}, #{description}, now(), 0);
+	</insert>
+	
+	<delete id="deleteNotice" parameterType="int">
+		delete from notice
+		where noticeId = #{noticeId};
+	</delete>
+	
+	<update id="modifyNotice" parameterType="ModifyNoticeRequest">
+		update notice
+		set title = #{title}, description = #{description}, dateTime = now()
+		where noticeId = #{noticeId}
+	</update>
+	
+	<select id="findNoticeById" parameterType="int" resultType="Notice">
+		select *
+		from notice
+		where noticeId = #{noticeId};
+	</select>
+	
+	<select id="isVisited" parameterType="NoticeHitsRequest" resultType="NoticeHitsRequest">
+		select * 
+		from notice_view_record
+		where noticeId = #{noticeId} and refreshToken = #{refreshToken}
+	</select>
+	
+	<insert id="addVisit" parameterType="NoticeHitsRequest">
+		insert into notice_view_record (noticeId, refreshToken)
+		value (#{noticeId}, #{refreshToken});
+	</insert>
+	
+	<update id="updateHits" parameterType="UpdateHits">
+		update notice
+		set hits = #{hits}
+		where noticeId = #{noticeId}
+	</update>
+</mapper>

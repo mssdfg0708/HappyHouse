@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.happyhouse.model.mapper.ReplyMapper">
+
+	<select id="getReplyList" parameterType="int" resultType="Reply">
+		select *
+		from reply
+		where noticeId = #{noticeId}
+	</select>
+
+	<insert id="createReply" parameterType="ReplyRequest">
+		insert into reply (noticeId, writerId, writerName, replyDescription, dateTime)
+		value (#{noticeId}, #{writerId}, #{writerName}, #{replyDescription}, now())
+	</insert>
+	
+	<update id="modifyReply" parameterType="ReplyRequest">
+		update reply
+		set replyDescription = #{replyDescription}, dateTime = now()
+		where replyId = #{replyId}
+	</update>
+	
+	<delete id="deleteReply" parameterType="ReplyRequest">
+		delete from reply
+		where replyId = #{replyId}
+	</delete>
+	
+	<select id="getReply" parameterType="ReplyRequest" resultType="Reply">
+		select * 
+		from reply
+		where replyId = #{replyId}
+	</select>
+</mapper>
